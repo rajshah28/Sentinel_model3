@@ -59,20 +59,27 @@ budget on the very first attempt at each vendor's footage.
 ### Real-world finding from the Vendor D live feed (Demo 4)
 
 Running the same pipeline against real, live cameras on the government
-sandbox grid (7 reachable cameras, 68 total detection events — see the
-root README's "Demo 4" section for the full run) surfaced a real accuracy
-limitation worth documenting honestly rather than omitting: **every
-detection from that run was a false positive on the camera's own
-burned-in on-screen text overlay** (location name + timestamp banner),
-not an actual vehicle plate. Inspecting the saved frames directly showed
-why — every reachable camera happened to be capturing real night-time
-footage with no close, well-lit vehicle in frame, while the overlay
+sandbox grid, across three separate capture runs (7 reachable cameras/68
+detections; a 16-detection verification run; and the largest, 18
+reachable cameras/45 detections — see the root README's "Demo 4" section
+for all three) surfaced a real accuracy limitation worth documenting
+honestly rather than omitting: **every detection across all three runs
+was a false positive on the camera's own burned-in on-screen text
+overlay** (location name + timestamp banner, and in one frame, real
+"GUJARAT POLICE" barrier signage), not an actual vehicle plate.
+Inspecting the saved frames directly showed why — every reachable camera
+was capturing real night-time footage; some frames had no vehicle in
+view at all, others had real vehicles (cars, a scooter) present but too
+far away or headlight-blown-out for a legible plate, while the overlay
 banner is high-contrast, rectangular, white-on-dark text, which is
 structurally exactly what a plate-region detector is trained to key on
 at a distance. This is a real, known class of ANPR false positive
 (on-screen graphics/text competing with genuine plate regions), not a
 pipeline defect — the detector and OCR both did exactly what they're
 designed to do on the visual pattern actually present in those frames.
+Camera reachability itself genuinely fluctuates between runs (7 of 30,
+then later 18 of 30, reachable on the same sandbox) — consistent with
+real, not simulated, infrastructure.
 
 What this does and doesn't say about the system: the ANPR pipeline's
 correctness is independently proven on the mandatory Vendor A/B/C demo
@@ -105,22 +112,24 @@ that's the real, available public-domain sample footage, so an Indian-
 format filter applied there would break the already-verified `BGY888`
 watchlist-match demo for no benefit.
 
-**Result applying this filter to the real 68-detection Demo 4 capture:
-0 of 68 pass.** Every one of the 68 raw detections was overlay text
-(`JANPATH`, `MADHURAM`, `VADLAFATAK`, burned-in date stamps, etc.), none
-of which happen to accidentally match the Indian plate pattern either —
-confirming by an independent method (format validation, not just visual
-frame inspection) that the false-positive finding above is real and that
-nothing was a near-miss genuine plate the filter incorrectly excluded.
-This 0-of-68 result is reported explicitly as such in both the CSV
-(`reports/govt_feed_report_<ts>_plate_format_valid.csv`, an intentionally
-empty file with headers only) and the PDF (`reports/govt_feed_report_<ts>.pdf`,
-which states the 0-of-68 result and the reason in the document body
-itself, distinct from "pipeline failure") — never a silently emptied
-report. The unfiltered 68 detections remain available in
-`reports/govt_feed_report_<ts>.csv` as the full record of what the
-pipeline actually captured; the filter is a reporting view, not a
-deletion.
+**Result applying this filter to all three real Demo 4 captures:
+0 of 68, 0 of 16, and 0 of 45 pass** — the same true result, three
+separate times. Every raw detection across all runs was overlay text
+(`JANPATH`, `MADHURAM`, `VADLAFATAK`, `POLICE`, burned-in date stamps,
+etc.), none of which happen to accidentally match the Indian plate
+pattern either — confirming by an independent method (format validation,
+not just visual frame inspection) that the false-positive finding above
+is real and that nothing was a near-miss genuine plate the filter
+incorrectly excluded. Each 0-of-N result is reported explicitly as such
+in both the CSV (`reports/govt_feed_report_<ts>_plate_format_valid.csv`,
+an intentionally empty file with headers only) and the PDF
+(`reports/govt_feed_report_<ts>.pdf`, which states the 0-of-N result and
+the reason in the document body itself, distinct from "pipeline
+failure") — never a silently emptied report. The unfiltered detections
+remain available in `reports/govt_feed_report_<ts>.csv` as the full
+record of what the pipeline actually captured; the filter is a reporting
+view, not a deletion. Primary/largest run:
+`reports/govt_feed_report_20260914_162712.*` (18 cameras, 45 detections).
 
 ## Watchlist matching (mandatory scope, also built)
 

@@ -15,12 +15,18 @@ and attached to the submission form immediately.
 
 ## Demo 4 output report — file inventory
 
+Three separate real capture runs were made against the live government
+sandbox, on different reachability windows (camera availability genuinely
+fluctuates run to run — real infrastructure, not simulated). All three
+agree on the same honest result. The largest/most recent run is packaged
+as the primary submission files.
+
 | File | Contents |
 |---|---|
-| `submission/demo4_output_report/demo4_raw_detections.csv` | All 68 raw ANPR detections from the primary live-capture run against the real government sandbox grid (7 reachable cameras) |
+| `submission/demo4_output_report/demo4_raw_detections.csv` | All 45 raw ANPR detections from the primary live-capture run — 18 reachable cameras (up from 7 on the first probe; the sandbox's camera availability changes over time) |
 | `submission/demo4_output_report/demo4_plate_format_valid.csv` | The same run, filtered through Indian plate-format validation — 0 rows (headers only), honestly reflecting the real result |
-| `submission/demo4_output_report/demo4_output_report.pdf` | The presentable report: states "0 of 68 pass, due to overlay-text false positives — full pipeline verified functional against real infrastructure" directly in the document body |
-| `submission/demo4_output_report/demo4_verification_run_*` | A second, independent live-capture run (16 detections) that corroborates the same 0-of-N finding — kept as additional evidence, not required but strengthens the case that this is a real, repeatable result |
+| `submission/demo4_output_report/demo4_output_report.pdf` | The presentable report: states "0 of 45 pass, due to overlay-text false positives — full pipeline verified functional against real infrastructure" directly in the document body |
+| `submission/demo4_output_report/demo4_verification_run_*` | An earlier, independent live-capture run (16 detections, 7 reachable cameras) that corroborates the same 0-of-N finding — kept as additional evidence. (A third run, 68 detections from the original 7-camera probe, produced the same result too — see `docs/04-ai-video-analytics.md` for all three.) |
 
 ## Architecture diagrams
 
