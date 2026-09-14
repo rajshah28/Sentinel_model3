@@ -1,0 +1,15 @@
+flowchart LR
+    V["Heterogeneous<br/>Department VMS<br/>26 depts · 80,000 cameras"] --> AD["Adapter Layer<br/>one interface,<br/>vendor-specific plugins"]
+    AD --> BUS["Event Bus<br/>metadata &amp; alerts only<br/>no raw video centralized"]
+    BUS --> AI["ANPR Analytics<br/>YOLOv8n + EasyOCR"]
+    AI --> CORR["Correlation Engine<br/>watchlist match · dedup"]
+    CORR --> ALERT["Real-Time Alerts<br/>+ Cross-Camera Trace"]
+    ALERT --> DASH["Unified Dashboard<br/>GIS · RBAC"]
+
+    style V fill:#1a2a3b,stroke:#3b82f6,color:#fff
+    style AD fill:#1a2a3b,stroke:#3b82f6,color:#fff
+    style BUS fill:#1a2a3b,stroke:#3b82f6,color:#fff
+    style AI fill:#1a2a3b,stroke:#3b82f6,color:#fff
+    style CORR fill:#1a2a3b,stroke:#3b82f6,color:#fff
+    style ALERT fill:#3b1a1a,stroke:#ef4444,color:#fff
+    style DASH fill:#1a2a3b,stroke:#3b82f6,color:#fff

@@ -1,0 +1,48 @@
+flowchart TB
+    subgraph Vendors["Departmental VMS Sources (heterogeneous)"]
+        VA["Vendor A · RTSP-style stream<br/>Valsad Traffic Police"]
+        VB["Vendor B · File batch export<br/>Dahod City Police"]
+        VC["Vendor C · Snapshot-poll DVR<br/>Somnath Traffic Police"]
+        VD["Vendor D · Live RTSP grid<br/>Govt Sandbox (real, authenticated)"]
+        VN["Vendor N ...<br/>any new department"]
+    end
+
+    subgraph Adapters["Adapter Layer — app/adapters/"]
+        AA["VendorARtspSimAdapter"]
+        AB["VendorBFileBatchAdapter"]
+        AC["VendorCSnapshotPollAdapter"]
+        AD["VendorDGovtGridAdapter<br/>PTS timing · TCP-forced · reconnect backoff"]
+        AN["VendorAdapter interface<br/>one new class per onboarding"]
+    end
+
+    VA --> AA
+    VB --> AB
+    VC --> AC
+    VD --> AD
+    VN -.implements.-> AN
+
+    AA --> NF["NormalizedFrame<br/>common schema"]
+    AB --> NF
+    AC --> NF
+    AD --> NF
+
+    NF --> ANPR["ANPR Pipeline<br/>YOLOv8n plate detect + EasyOCR<br/>app/anpr/pipeline.py"]
+
+    ANPR -->|publish DetectionEvent| BUS["Event Bus<br/>app/bus/event_bus.py<br/>async pub/sub — Kafka / Redis Streams at scale"]
+
+    BUS -->|subscribe| CORR["Correlation Engine<br/>app/correlation/engine.py<br/>dedup + watchlist match"]
+
+    AD -.-> PF["Plate-Format Filter<br/>Indian plate regex<br/>Vendor D reporting only"]
+    PF --> RPT["Demo 4 Report<br/>CSV / PDF"]
+
+    CORR -->|publish AlertEvent| BUS
+    CORR --> PG[("PostgreSQL<br/>cameras · detections · alerts · watchlist · users")]
+
+    BUS -->|/ws/alerts| API["FastAPI<br/>app/main.py"]
+    PG --> API
+
+    API --> WEB["React Dashboard<br/>Status · Live Alerts · Vehicle Trace · GIS Map · Govt Grid Live"]
+
+    style VD fill:#3b1a1a,stroke:#ef4444,color:#fff
+    style AD fill:#3b1a1a,stroke:#ef4444,color:#fff
+    style PF fill:#1a2a3b,stroke:#3b82f6,color:#fff

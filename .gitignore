@@ -4,10 +4,11 @@ venv/
 __pycache__/
 *.pyc
 node_modules/
-data/videos/*.mp4
 data/frames/
+reports/
 *.db
 .env
+!frontend/.env
 pgdata/
 *.log
 dist/

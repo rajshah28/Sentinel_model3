@@ -1,0 +1,66 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sentinel
+      POSTGRES_PASSWORD: sentinel
+      POSTGRES_DB: sentinel
+    ports:
+      - "5432:5432"
+    volumes:
+      - sentinel_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentinel"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg2://sentinel:sentinel@postgres:5432/sentinel
+      SENTINEL_JWT_SECRET: change-this-in-production-please
+      SENTINEL_DATA_DIR: /data
+      # Demo 4 (Vendor D, live government sandbox grid): set these to
+      # enable the Govt Grid live-capture endpoints. Left empty by
+      # default -- the catalogue/run endpoints fail with a clear error
+      # rather than silently doing nothing if unset. Populate via a
+      # local .env file next to this docker-compose.yml (docker compose
+      # reads .env automatically) -- never commit real values.
+      SENTINEL_GOVT_GRID_HOST: ${SENTINEL_GOVT_GRID_HOST:-}
+      SENTINEL_GOVT_GRID_EMAIL: ${SENTINEL_GOVT_GRID_EMAIL:-}
+      SENTINEL_GOVT_GRID_PASSWORD: ${SENTINEL_GOVT_GRID_PASSWORD:-}
+      SENTINEL_GOVT_GRID_CATALOGUE_URL: ${SENTINEL_GOVT_GRID_CATALOGUE_URL:-}
+      SENTINEL_GOVT_GRID_USE_FALLBACK_IDS: ${SENTINEL_GOVT_GRID_USE_FALLBACK_IDS:-}
+    ports:
+      - "8010:8010"
+    volumes:
+      - ./data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # ANPR inference (YOLOv8n + EasyOCR) is CPU-bound in this build --
+    # there is no GPU passthrough here. The pipeline processes sampled
+    # frames from recorded demo footage, not live real-time streams, so
+    # this is expected and by design for tonight's CPU-only demo.
+    command: >
+      sh -c "python scripts/init_db.py &&
+             python scripts/seed_data.py &&
+             python scripts/seed_static_cameras.py &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8010"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE: http://localhost:8010
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  sentinel_pgdata:
