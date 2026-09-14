@@ -10,7 +10,7 @@ and attached to the submission form immediately.
 | 2 | Technical Proposal / High-Level Design (HLD) | **Done** | `submission/high_level_design.pdf` | Real PDF (reportlab), 13 pages. Rendered to images and visually inspected page-by-page — one real table-overflow bug and two orphan-page layout issues were found this way and fixed. |
 | 3 | Own-feed demo video link | **Pending on you** | — | You're recording this yourself. Add the link here (or directly in the submission form) once ready. |
 | 4 | Government-feed demo video + output report link | **Partially done** | Report: `submission/demo4_output_report/` (see below). Video: **pending on you**. | The output report itself is done and packaged. The video is yours to record. |
-| 5 | GitHub/GitLab repo link | **Pending — see "To do before you submit"** | — | Code is ready to push; you need to confirm the target repo (see below) before I push, since this action is irreversible-ish (public, judge-visible) and I don't have a confirmed remote URL from you yet. |
+| 5 | GitHub/GitLab repo link | **Done** | [github.com/rajshah28/Sentinel_model3](https://github.com/rajshah28/Sentinel_model3) | Pushed to `main`. Confirmed public (no sign-in wall) and confirmed the README renders correctly on GitHub's UI, including the embedded architecture diagram image loading — not a broken link. |
 | 6 | Hosted platform URL + credentials | **N/A** | — | Not part of this build's scope — the deliverable is the local/Docker-Compose-run system plus documentation, not a persistently hosted instance. Flag me if the submission form requires this and I'll clarify with you how to handle it. |
 
 ## Demo 4 output report — file inventory
@@ -71,9 +71,9 @@ and attached to the submission form immediately.
 
 ## To do before you submit
 
-- [ ] **Confirm the target GitHub repo** (new repo, or an existing one you
-      already created) and whether it should be public from the start —
-      I have not pushed yet, pending this confirmation.
+- [x] ~~Confirm the target GitHub repo and push~~ — done:
+      [github.com/rajshah28/Sentinel_model3](https://github.com/rajshah28/Sentinel_model3),
+      confirmed public with a correctly rendering README.
 - [ ] Record the own-feed demo video and government-feed demo video, add
       their links to item 3 and 4 above (and to the submission form).
 - [ ] Open `submission/solution_presentation.pptx` yourself in real
@@ -82,3 +82,8 @@ and attached to the submission form immediately.
 - [ ] If the submission form has a "hosted platform URL" field and you do
       want to stand one up, tell me and we'll figure out the fastest real
       option — right now this is marked N/A because it wasn't in scope.
+- [ ] Note for future pushes: this machine's git identity (SSH key
+      authenticates as GitHub user `rajshah0928`) was added as a
+      collaborator on the repo to enable this push. If you want to remove
+      that access after the hackathon, do so from
+      [repo Settings → Collaborators](https://github.com/rajshah28/Sentinel_model3/settings/access).
