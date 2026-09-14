@@ -1,0 +1,14 @@
+.tools/
+.venv/
+venv/
+__pycache__/
+*.pyc
+node_modules/
+data/videos/*.mp4
+data/frames/
+*.db
+.env
+pgdata/
+*.log
+dist/
+build/
