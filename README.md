@@ -223,7 +223,7 @@ actual sandbox — see the real run below.
 - **Full pipeline run** against the 18 reachable cameras (real RTSP connect
   → real frame sampling by PTS → real YOLOv8n+EasyOCR inference → real bus
   → real correlation engine → Postgres): **45 real detection events**
-  across 7 of the 18 cameras. Report: `reports/govt_feed_report_20260914_162712.{csv,pdf}`.
+  across 7 of the 18 cameras. Report: `reports/govt_feed_report_20260914_165340.{csv,pdf}`.
   An earlier, smaller run (7 cameras, 68 detections,
   `..._145735.{csv,pdf}`) and an independent verification run (16
   detections, `..._152503.{csv,pdf}`) both produced the same result below —
@@ -258,7 +258,7 @@ actual sandbox — see the real run below.
   detections, due to overlay-text false positives — full pipeline verified
   functional against real infrastructure" in both the CSV and PDF output,
   not silently emptied. Files (primary/largest run):
-  `reports/govt_feed_report_20260914_162712.csv` (all 45 raw detections,
+  `reports/govt_feed_report_20260914_165340.csv` (all 45 raw detections,
   unfiltered — the full record), `..._plate_format_valid.csv` (0 rows,
   headers only), `....pdf` (states the 0-of-45 result and why, in the
   document body). Re-run `scripts/test_govt_grid_plate_filter.py` to see

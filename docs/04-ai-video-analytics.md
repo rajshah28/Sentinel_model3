@@ -129,7 +129,7 @@ failure") — never a silently emptied report. The unfiltered detections
 remain available in `reports/govt_feed_report_<ts>.csv` as the full
 record of what the pipeline actually captured; the filter is a reporting
 view, not a deletion. Primary/largest run:
-`reports/govt_feed_report_20260914_162712.*` (18 cameras, 45 detections).
+`reports/govt_feed_report_20260914_165340.*` (18 cameras, 45 detections).
 
 ## Watchlist matching (mandatory scope, also built)
 

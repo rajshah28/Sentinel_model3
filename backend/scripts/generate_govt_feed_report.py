@@ -94,7 +94,13 @@ def build_report(start: datetime, camera_ids: list[str]) -> list[dict]:
                     "confidence": d.plate_confidence,
                     "timestamp_utc": d.timestamp.isoformat(),
                     "watchlist_match": watchlist_hit.reason if watchlist_hit else "",
-                    "frame_path": d.frame_path,
+                    # Report output only ever exposes the filename, never the
+                    # full local disk path -- internal storage (DetectionRecord
+                    # .frame_path in the DB) is unchanged and still absolute,
+                    # since the running app needs that to serve the image.
+                    # This report is a public-facing artifact and must not leak
+                    # local usernames/directory structure.
+                    "frame_path": os.path.basename(d.frame_path) if d.frame_path else "",
                 })
         return rows
     finally:
